@@ -62,7 +62,7 @@ export class Partie {
 /**
  * Classe représentant un joueur.
  * ┌──────────────────┐
- * │    Partie        │
+ * │    Joueur        │
  * ├──────────────────┤
  * │ - nom            │
  * │ - socketId       │
