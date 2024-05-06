@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { Server } from 'socket.io';
 import { join, dirname } from 'node:path';
 import { Partie } from './partie.js';
+import { Joueur } from './partie.js';
 
 // Mise en place du serveur
 const app = express();
@@ -34,20 +35,31 @@ io.on("connection", (socket) => {
   // On écoute des évènements sur le socket
   socket.on('click-cible',  (numeroCible) => {
     if (numeroCible == partie.numeroCible){
+      
+      let joueur = partie.getJoueurById(socket.id);
+      console.log(joueur);
+      //partie.ajoutScore();
+      joueur.ajoutScore();
+
+      
+
       partie.nouvelleCible();
       // Envoie le message 'nouvelle-cible à tous les sockets.
       io.emit('nouvelle-cible', partie.numeroCible);
       // Envoie le message 'gagne' seulement à ce socket.
       socket.emit('gagne');
+
+      socket.emit('maj-joueurs' , partie.joueurs);
     }
-  });
+  })});
+
 
   socket.on('disconnect', (joueurs) => {
     console.log(`le joueur ${socket.id} s'est déconnecté`);
     partie.supprimeJoueur(socket.id);
   });
 
-});
+
 
 // Lance le serveur.
 console.log('Lance le serveur sur http://localhost:3000');
