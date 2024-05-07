@@ -51,15 +51,15 @@ io.on("connection", (socket) => {
 
       socket.emit('maj-joueurs' , partie.joueurs);
     }
-  })});
+  });
 
 
   socket.on('disconnect', (joueurs) => {
     console.log(`le joueur ${socket.id} s'est déconnecté`);
     partie.supprimeJoueur(socket.id);
+    io.emit('maj-joueurs', partie.joueurs);
   });
-
-
+});
 
 // Lance le serveur.
 console.log('Lance le serveur sur http://localhost:3000');
